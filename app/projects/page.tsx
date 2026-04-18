@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getProjects } from "@/lib/data/projects";
 import { ProjectsPageView } from "@/views/projects/projectsPageView";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Realizacje | MADU HOME",
   description:

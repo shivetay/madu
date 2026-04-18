@@ -3,6 +3,8 @@ import { getHomeContent } from "@/lib/data/homeContent";
 import { getProjects } from "@/lib/data/projects";
 import { HomePageView } from "@/views/home/homePageView";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "MADU HOME | Pracownia projektowania wnętrz",
   description:

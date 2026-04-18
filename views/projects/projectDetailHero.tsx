@@ -6,11 +6,12 @@ type Props = {
 };
 
 export function ProjectDetailHero({ project }: Props) {
+  const hero = project.images[0] ?? "/icon.svg";
   return (
     <div className="mx-auto max-w-6xl px-6 md:px-10">
       <div className="relative aspect-[16/9] w-full overflow-hidden">
         <Image
-          src={project.images[0]}
+          src={hero}
           alt={project.title}
           fill
           priority

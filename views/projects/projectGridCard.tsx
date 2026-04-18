@@ -8,11 +8,12 @@ type Props = {
 
 export function ProjectGridCard({ project }: Props) {
   const { slug, title, location, year, type, images } = project;
+  const cover = images[0] ?? "/icon.svg";
   return (
     <Link href={`/projects/${slug}`} className="group block">
       <div className="relative mb-5 aspect-[4/5] overflow-hidden">
         <Image
-          src={images[0]}
+          src={cover}
           alt={title}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"

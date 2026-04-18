@@ -5,5 +5,8 @@ export type Project = {
   year: string;
   type: string;
   description: string;
-  images: [string, string];
+  /** Posortowane: okładka pierwsza, potem sortOrder. */
+  images: string[];
+  metaTitle?: string | null;
+  metaDescription?: string | null;
 };
