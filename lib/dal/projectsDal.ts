@@ -18,11 +18,19 @@ function assertDatabaseUrl() {
   }
 }
 
-/** Błąd połączenia (Postgres wyłączony, zły host/port, sieć) — nie mylić z błędem zapytania SQL. */
-function isDatabaseConnectivityError(e: unknown): boolean {
+/**
+ * Błędy, przy których publiczne odczyty zwracają pusty wynik zamiast 500:
+ * - brak połączenia (Postgres wyłączony, zły host/port),
+ * - brak migracji / tabeli (P2021 — uruchom `npx prisma db push`).
+ */
+function isDegradableReadError(e: unknown): boolean {
   if (e instanceof PrismaClientInitializationError) return true;
   if (e instanceof PrismaClientKnownRequestError) {
-    return e.code === "P1001" || e.code === "P1017";
+    return (
+      e.code === "P1001" ||
+      e.code === "P1017" ||
+      e.code === "P2021"
+    );
   }
   if (e instanceof Error) {
     const m = e.message;
@@ -31,7 +39,8 @@ function isDatabaseConnectivityError(e: unknown): boolean {
       m.includes("ECONNREFUSED") ||
       m.includes("ETIMEDOUT") ||
       m.includes("ENOTFOUND") ||
-      m.includes("getaddrinfo ENOTFOUND")
+      m.includes("getaddrinfo ENOTFOUND") ||
+      m.includes("does not exist in the current database")
     );
   }
   return false;
@@ -42,10 +51,10 @@ async function withDalReadFallback<T>(fallback: T, fn: () => Promise<T>): Promis
   try {
     return await fn();
   } catch (e) {
-    if (isDatabaseConnectivityError(e)) {
+    if (isDegradableReadError(e)) {
       if (process.env.NODE_ENV === "development") {
         console.warn(
-          "[projectsDal] Baza niedostępna — zwracam pusty wynik. Uruchom Postgres albo popraw DATABASE_URL.",
+          "[projectsDal] Odczyt projektów niemożliwy — zwracam pusty wynik. Sprawdź Postgres, DATABASE_URL oraz `npx prisma db push`.",
         );
       }
       return fallback;

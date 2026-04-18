@@ -27,7 +27,9 @@ export function StudioLoginForm() {
     });
     setPending(false);
     if (res?.error) {
-      setError("Nieprawidłowe hasło.");
+      setError(
+        "Logowanie nie powiodło się. Sprawdź hasło oraz w pliku .env: AUTH_SECRET i STUDIO_PASSWORD_HASH (pełny hash z npm run studio:hash-password, bez cudzysłowów wokół wartości).",
+      );
       return;
     }
     window.location.href = next;
