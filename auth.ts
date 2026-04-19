@@ -2,6 +2,28 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
+/**
+ * Lokalny `.env` w Next.js wymaga `\$` zamiast `$` w hashu bcrypt.
+ * W panelu Vercel wartość jest dosłowna — wklejony `\$2a\$12\$...` trzeba
+ * sprowadzić do prawdziwego `$2a$12$...`.
+ */
+function normalizeStudioPasswordHash(raw: string | undefined): string | undefined {
+  if (raw == null) return undefined;
+  let h = raw.trim();
+  const stripQuotes = () => {
+    if (
+      (h.startsWith('"') && h.endsWith('"')) ||
+      (h.startsWith("'") && h.endsWith("'"))
+    ) {
+      h = h.slice(1, -1).trim();
+    }
+  };
+  stripQuotes();
+  h = h.replace(/\\\$/g, "$");
+  stripQuotes();
+  return h;
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
@@ -12,7 +34,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       authorize: async (credentials) => {
         const password = credentials?.password;
-        const hash = process.env.STUDIO_PASSWORD_HASH?.trim();
+        const hash = normalizeStudioPasswordHash(process.env.STUDIO_PASSWORD_HASH);
 
         if (typeof password !== "string" || password.length < 1) {
           return null;

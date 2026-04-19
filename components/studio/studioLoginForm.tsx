@@ -28,7 +28,7 @@ export function StudioLoginForm() {
     setPending(false);
     if (res?.error) {
       setError(
-        "Logowanie nie powiodło się. Sprawdź hasło oraz w pliku .env: AUTH_SECRET i STUDIO_PASSWORD_HASH (pełny hash z npm run studio:hash-password, bez cudzysłowów wokół wartości).",
+        "Logowanie nie powiodło się. Sprawdź hasło. W Vercelu wklej sam hash bcrypt (zaczyna się od $2a$ / $2b$ / $2y$) — bez cudzysłowów i bez znaków \\ przed $. Lokalnie w .env używaj \\$ przed każdym $. Upewnij się też, że AUTH_SECRET jest ustawiony.",
       );
       return;
     }
