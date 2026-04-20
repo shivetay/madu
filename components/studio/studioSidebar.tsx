@@ -7,6 +7,9 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/studio/projekty", label: "Projekty" },
+  { href: "/studio/strona/glowna", label: "Strona glowna" },
+  { href: "/studio/strona/o-nas", label: "O nas" },
+  { href: "/studio/strona/oferta", label: "Oferta" },
 ] as const;
 
 export function StudioSidebar() {

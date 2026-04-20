@@ -1,4 +1,4 @@
-import type { AboutContent } from "@/lib/data/aboutContent";
+import type { AboutContent } from "@/lib/types/siteContent";
 import { AboutHeroSection } from "@/views/about/aboutHeroSection";
 import { AboutPhilosophySection } from "@/views/about/aboutPhilosophySection";
 import { AboutPortraitSection } from "@/views/about/aboutPortraitSection";
@@ -11,7 +11,10 @@ type Props = {
 export function AboutPageView({ content }: Props) {
   return (
     <main className="pt-16">
-      <AboutHeroSection />
+      <AboutHeroSection
+        eyebrow={content.heroEyebrow}
+        title={content.heroTitle}
+      />
       <AboutPortraitSection
         imageSrc={content.portrait.src}
         imageAlt={content.portrait.alt}

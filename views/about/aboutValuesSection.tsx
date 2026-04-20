@@ -1,4 +1,4 @@
-import type { AboutValue } from "@/lib/data/aboutContent";
+import type { AboutValue } from "@/lib/types/siteContent";
 
 type Props = {
   title: string;
