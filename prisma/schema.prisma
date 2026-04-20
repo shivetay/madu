@@ -36,3 +36,11 @@ model ProjectImage {
 
   @@index([projectId])
 }
+
+model SiteContent {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  payload   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

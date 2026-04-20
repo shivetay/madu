@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getServices } from "@/lib/data/services";
+import { getOfferContent } from "@/lib/data/offerContent";
 import { OfferPageView } from "@/views/offer/offerPageView";
 
 export const metadata: Metadata = {
@@ -9,6 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default async function OfferPage() {
-  const services = await getServices();
-  return <OfferPageView services={services} />;
+  const content = await getOfferContent();
+  return <OfferPageView content={content} services={content.services} />;
 }
