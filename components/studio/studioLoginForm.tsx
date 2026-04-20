@@ -6,7 +6,11 @@ import { useState } from "react";
 
 export function StudioLoginForm() {
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/studio/projekty";
+  const rawNext = searchParams.get("next");
+  const next =
+    rawNext && rawNext.startsWith("/") && !rawNext.startsWith("//")
+      ? rawNext
+      : "/studio/projekty";
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -28,7 +32,7 @@ export function StudioLoginForm() {
     setPending(false);
     if (res?.error) {
       setError(
-        "Logowanie nie powiodło się. Sprawdź hasło. W Vercelu wklej sam hash bcrypt (zaczyna się od $2a$ / $2b$ / $2y$) — bez cudzysłowów i bez znaków \\ przed $. Lokalnie w .env używaj \\$ przed każdym $. Upewnij się też, że AUTH_SECRET jest ustawiony.",
+        "Logowanie nie powiodło się.",
       );
       return;
     }
@@ -44,8 +48,7 @@ export function StudioLoginForm() {
         Logowanie do studia
       </h1>
       <p className="mb-8 text-sm text-muted-foreground">
-        Wpisz hasło administratora. Po pierwszej konfiguracji ustaw zmienne
-        AUTH_SECRET oraz STUDIO_PASSWORD_HASH w środowisku.
+        Wpisz hasło administratora.
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
