@@ -19,9 +19,9 @@ export function ProjectDetailRelated({ projects }: Props) {
         {projects.map(({ slug, title, location, images }) => (
           <Link key={slug} href={`/projects/${slug}`} className="group block">
             <div className="relative mb-4 aspect-[4/5] overflow-hidden">
-              <Image
-                src={images[0]}
-                alt={title}
+                <Image
+                  src={images[0] ?? "/icon.svg"}
+                  alt={title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 640px) 100vw, 33vw"

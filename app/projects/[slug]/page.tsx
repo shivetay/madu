@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { getProjectBySlug, getProjectSlugs, getProjects } from "@/lib/data/projects";
 import { ProjectDetailPageView } from "@/views/projects/projectDetailPageView";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -16,9 +18,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
   if (!project) return {};
+  const title =
+    project.metaTitle?.trim() || `${project.title} | MADU HOME`;
+  const description =
+    project.metaDescription?.trim() || project.description;
   return {
-    title: `${project.title} | MADU HOME`,
-    description: project.description,
+    title,
+    description,
   };
 }
 
